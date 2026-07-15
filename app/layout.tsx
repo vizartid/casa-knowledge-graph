@@ -15,7 +15,7 @@ const youngSerif = Young_Serif({
 })
 
 export const metadata: Metadata = {
-  title: 'Casa — Second Brain',
+  title: 'CasaLabs - Dynamic Knowledge Mapping for Your Second Brain',
   description: 'Ruang berpikir personal untuk catatan, koneksi, dan percakapan dengan Casa.',
   applicationName: 'Casa',
 }

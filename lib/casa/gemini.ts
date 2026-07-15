@@ -1,7 +1,7 @@
 import type { CaptureDraft, Note, VoiceResult } from './types'
 import { emptyFields } from './types'
 
-const models = ['gemini-2.5-flash', 'gemini-2.0-flash']
+const models = ['gemini-2.5-flash']
 const taxonomy = `Backend Engineering; Frontend Engineering; AI Engineering; Machine Learning Engineering; DevOps; IoT; Network Engineering; Instrumentation & Automation.`
 
 async function generate(apiKey: string, prompt: string, json = false) {
