@@ -8,118 +8,161 @@
 ![Three.js](https://img.shields.io/badge/Three.js-r185-000000?style=for-the-badge&logo=three.js&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
-**Ruang berpikir personal untuk catatan, koneksi, dan percakapan dengan Casa** — a local-first, Zettelkasten-style second brain with an AI thinking partner, voice capture, and a live knowledge graph. Built with Next.js 16, React 19, and Google Gemini.
+**A personal thinking space for notes, knowledge connections, and conversations with Casa** — a local-first, Zettelkasten-inspired second brain featuring an AI thinking partner, voice capture, and a live knowledge graph. Built with Next.js 16, React 19, and Google Gemini.
+
+---
 
 ## ✨ Features
 
-- **Atomic Note Capture** — dump raw thoughts and let Gemini split them into atomic, well-tagged second-brain notes, following a configurable capture template
-- **Voice Interface ("Casa")** — talk to Casa to create a new note, append to the active note, search existing notes, or just brainstorm — powered by a voice-intent classifier backed by Gemini
-- **Knowledge Graph View** — an interactive force-directed graph (`react-force-graph-2d`) visualizing notes as nodes, connected via `[[wikilinks]]`, colored by field/domain and sized by connection density
-- **3D Ambient Orb** — a Three.js/React Three Fiber orb that reflects Casa's state (idle, listening, processing, speaking, done, error)
-- **Field Taxonomy Scoring** — every note is scored across a custom taxonomy (Backend, Frontend, AI Engineering, ML Engineering, DevOps, IoT, Network, Instrumentation & Automation) to visually cluster related knowledge
-- **Local-First Storage** — all notes and templates are persisted in the browser via IndexedDB (`idb`), so your knowledge base works fully offline once loaded
-- **Wikilink Auto-Linking** — write `[[Note Title]]` inside any note and Casa automatically resolves it into a graph connection
-- **Capture Templates** — reusable prompts (e.g. "Atomic Notes", "Meeting Debrief") to control how raw input gets split into notes
-- **Chat with AI** — ask Casa questions grounded in your own notes
+- **Intelligent Note Capture** — freely capture your thoughts and let Gemini automatically transform them into structured, atomic notes using configurable capture templates.
+- **Voice Assistant ("Casa")** — interact naturally with Casa to create notes, append information, search your knowledge base, or brainstorm ideas using AI-powered voice intent recognition.
+- **Interactive Knowledge Graph** — visualize relationships between notes through a force-directed graph (`react-force-graph-2d`), where connections are automatically created from `[[wikilinks]]`.
+- **3D Ambient Orb** — an animated Three.js / React Three Fiber orb that reflects Casa's current state: idle, listening, processing, speaking, completed, or error.
+- **Knowledge Domain Classification** — automatically scores notes across custom domains (Backend, Frontend, AI Engineering, ML Engineering, DevOps, IoT, Networking, and Instrumentation & Automation) for intuitive visual clustering.
+- **Local-First Architecture** — stores all notes and templates locally in IndexedDB (`idb`), allowing the application to work completely offline after the initial load.
+- **Automatic Wikilink Resolution** — simply write `[[Note Title]]` to create dynamic links between related notes in the knowledge graph.
+- **Custom Capture Templates** — define reusable templates such as *Atomic Notes*, *Meeting Debrief*, or your own workflows to standardize knowledge capture.
+- **AI-Powered Knowledge Chat** — ask questions grounded in your personal knowledge base and receive contextual responses from Casa.
+
+---
 
 ## 🧱 Tech Stack
 
 | Layer | Technology |
-|---|---|
+|--------|------------|
 | Framework | Next.js 16 (App Router) |
 | UI Library | React 19 + TypeScript |
 | Styling | Tailwind CSS v4 |
-| 3D/Graphics | Three.js, React Three Fiber, `@react-three/drei`, `@react-three/postprocessing` |
-| Graph Visualization | `react-force-graph-2d` |
-| Local Storage | IndexedDB via `idb` |
-| AI | Google Gemini (`gemini-2.5-flash`, falls back to `gemini-2.0-flash`) |
+| 3D Graphics | Three.js, React Three Fiber, `@react-three/drei`, `@react-three/postprocessing` |
+| Knowledge Graph | `react-force-graph-2d` |
+| Local Storage | IndexedDB (`idb`) |
+| AI | Google Gemini (`gemini-2.5-flash`, fallback to `gemini-2.0-flash`) |
 | Analytics | Vercel Analytics |
 
-## 📊 How It Works
+---
 
-```
-Voice / Text Capture
+## 📊 Architecture Overview
+
+```text
+Voice / Text Input
         │
         ▼
-Gemini (split into atomic notes, classify voice intent)
+Google Gemini
+(Intent Recognition & Atomic Note Generation)
         │
         ▼
-IndexedDB (local-first storage: notes + templates)
+IndexedDB
+(Local Storage: Notes + Templates)
         │
         ▼
-Knowledge Graph View ── nodes = notes, edges = [[wikilinks]]
+Knowledge Graph
+(Nodes = Notes, Edges = [[Wikilinks]])
         │
         ▼
-Chat / Search / Tags / Templates / Settings
+Chat • Search • Tags • Templates • Settings
 ```
 
-Casa's Gemini API key is entered directly in **Settings** and used client-side to call the Gemini API — no backend server is required; everything runs in the browser.
+Casa operates entirely on the client side. Your Gemini API key is entered through **Settings** and used directly by the browser to communicate with Google's Gemini API—no backend server is required.
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (LTS)
-- A [Google Gemini API key](https://ai.google.dev/) (free tier available)
+- Node.js (LTS recommended)
+- A free or paid **Google Gemini API Key**
 
-### Installation
+### Clone the Repository
 
 ```bash
 git clone https://github.com/vizartid/casa-knowledge-graph.git
 cd casa-knowledge-graph
-npm install
-# or: pnpm install
 ```
 
-### Run locally
+### Install Dependencies
+
+```bash
+npm install
+
+# or
+
+pnpm install
+```
+
+### Start the Development Server
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000), then add your Gemini API key under **Settings** to enable capture, voice, and chat features.
+Visit:
 
-### Build for production
+```
+http://localhost:3000
+```
+
+Then open **Settings** and add your Gemini API key to enable AI-powered note capture, voice interaction, and chat.
+
+### Production Build
 
 ```bash
 npm run build
 npm run start
 ```
 
+---
+
 ## 📁 Project Structure
 
-```
+```text
 ├── app/
-│   ├── layout.tsx              # Root layout, metadata ("Casa — Second Brain")
-│   ├── page.tsx                # Entry point
+│   ├── layout.tsx              # Root layout & metadata
+│   ├── page.tsx                # Application entry point
 │   └── globals.css
+│
 ├── components/
-│   ├── casa-sidebar.tsx        # Navigation: Search, Files, Graph, Chat, Tags, Templates, Settings
-│   ├── casa-workspace.tsx      # Main workspace shell
-│   ├── casa-orb.tsx            # 3D ambient orb reflecting Casa's state
-│   ├── note-editor.tsx         # Note editing surface
+│   ├── casa-sidebar.tsx        # Navigation (Search, Graph, Chat, Settings, etc.)
+│   ├── casa-workspace.tsx      # Main workspace
+│   ├── casa-orb.tsx            # 3D AI status orb
+│   ├── note-editor.tsx         # Rich note editor
 │   └── casa/
-│       ├── capture-view.tsx    # Raw-input capture → AI note splitting
-│       ├── graph-view.tsx      # Force-directed knowledge graph
-│       └── workspace-views.tsx # Search, tags, templates, settings, chat views
+│       ├── capture-view.tsx    # AI-powered note capture
+│       ├── graph-view.tsx      # Interactive knowledge graph
+│       └── workspace-views.tsx # Chat, Search, Tags, Templates, Settings
+│
 ├── lib/casa/
-│   ├── types.ts                # Note, CaptureDraft, FieldScores, CasaIntent, etc.
-│   ├── db.ts                   # IndexedDB persistence (notes, templates, seed data)
-│   ├── gemini.ts                # Gemini API calls: summarize, split capture, voice intent
-│   ├── links.ts                # Wikilink extraction/resolution
-│   └── colors.ts               # Field-taxonomy → node color blending
-└── public/                     # Icons & static assets
+│   ├── types.ts                # Core data models
+│   ├── db.ts                   # IndexedDB persistence
+│   ├── gemini.ts               # Gemini integration
+│   ├── links.ts                # Wikilink parser & resolver
+│   └── colors.ts               # Knowledge domain color mapping
+│
+└── public/
+    └── ...                     # Static assets & icons
 ```
 
-## 🔐 Notes on Privacy & Storage
+---
 
-- All notes live in your browser's IndexedDB — nothing is sent to a server except direct calls to the Gemini API when you use AI features.
-- Your Gemini API key is stored locally (in Settings) and used only for client-side requests to Google's API.
+## 🔐 Privacy
+
+CasaLabs is designed with a **privacy-first, local-first** philosophy.
+
+- All notes remain stored locally in your browser using **IndexedDB**.
+- No application server stores or processes your personal knowledge.
+- AI requests are sent directly from your browser to the **Google Gemini API**.
+- Your Gemini API key is stored locally and is never transmitted to any third-party server other than Google's API endpoint during AI requests.
+
+---
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the **MIT License**.
+
+---
 
 ## 👤 Author
 
-**Muhammad Yusuf** ([@vizartid](https://github.com/vizartid))
+**Muhammad Yusuf**
+
+GitHub: **https://github.com/vizartid**
